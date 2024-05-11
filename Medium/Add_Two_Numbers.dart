@@ -1,34 +1,42 @@
-
-  // Definition for singly-linked list.
+// Definition for singly-linked list.
 
 class ListNode {
-    List<int>? val=[0];
-    ListNode? next;
-    ListNode( {this.val , this.next});
+  int val;
+  ListNode? next;
+  ListNode(this.val, [this.next]);
+}
 
-    reversListNode()=> this.val!.reversed;
-    toIntVal()=> int.parse(reversListNode().join(""));
-  }
- 
 class Solution {
   ListNode? addTwoNumbers(ListNode? l1, ListNode? l2) {
-    int sum= l1!.toIntVal()+l2!.toIntVal();
-    List<int> result=intToList(sum).reversed.toList();
-    ListNode? resultNode=ListNode(val:result );
-    return resultNode;
+    ListNode dummy_head=ListNode(0);
+    ListNode l3=dummy_head;
 
+    int carry=0;
+    while(l1 !=null || l2 !=null){
+      if (l1==null)l1=ListNode(0); 
+      if (l2==null)l2=ListNode(0); 
+      
+   
+      int cuurent_sum=l1.val+l2.val+carry;
+      carry=cuurent_sum ~/ 10;
+      int last_digit=cuurent_sum%10;
 
+      ListNode newNode=ListNode(last_digit);
+      l3.next=newNode;
+      if (l1!=null) l1=l1.next;
+      if (l2!=null) l2=l2.next;
+      l3=l3.next!;
+    }
+    if (carry>0) {
+      ListNode newNode=ListNode(carry);
+      l3.next=newNode;
+      l3=l3.next!;
+    }
+
+    return dummy_head.next;
   }
 
- List<int> intToList(int num)=>List.generate(num.toString().length, (index) => int.parse(num.toString()[index]));
-  
+
 }
 
-void main(List<String> args) {
-  Solution so=Solution();
-  ListNode l2=ListNode(val:[5,6,4] );
-  ListNode l1=ListNode(val: [2,4,3],next: l2);
-  // ListNode l2=ListNode(val:[9,9,9,9] );
-  // ListNode l1=ListNode(val: [9,9,9,9,9,9,9],next: l2);
-  print(so.addTwoNumbers(l1, l2)!.val);
-}
+
